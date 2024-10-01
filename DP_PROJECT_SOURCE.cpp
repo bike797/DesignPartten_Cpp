@@ -1,3 +1,4 @@
+#if 1
 // #1.
 #include <iostream>
 #include <ctime>
@@ -68,6 +69,7 @@ int main(void)
 	bbg.run();
 }
 
+#elif 0
 // #2
 int main()
 {
@@ -119,7 +121,7 @@ int main()
 }
 
 
-
+#elif 0
 // #3
 #include <iostream>
 #include <list>
@@ -132,3 +134,5 @@ int main()
 	cout << q.Pop() << endl; // 10
 	cout << q.Pop() << endl; // 20
 }
+
+#endif
