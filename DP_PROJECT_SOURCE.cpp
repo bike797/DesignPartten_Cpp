@@ -9,9 +9,11 @@ using namespace std;
 
 class BaseBallGame
 {
+protected:
 	typedef tuple<int, int, int> INPUT;
 	typedef tuple<int, int> RESULT;
 	vector<pair<INPUT, RESULT> > v;
+	INPUT possibleNumber;
 public:
 	BaseBallGame() { srand((unsigned)time(0)); }
 
@@ -19,17 +21,13 @@ public:
 	{
 		while (1)
 		{
+			possibleNumber = FindNumber_impl(v);
 			//-----------------------------------------------
-			// 이전의 결과가 담긴 vector v를 참고 해서
-			// 사용자가 생각한 숫자를 예측해 냅니다.
-			// 현재 구현은 무조건 랜덤 입니다.
-			int x = 0, y = 0, z = 0;
-			do {
-				x = rand() % 9 + 1;
-				y = rand() % 9 + 1;
-				z = rand() % 9 + 1;
-			} while (x == y || y == z || x == z);
+
 			//--------------------------------------
+			int x(get<0>(possibleNumber));
+			int y(get<1>(possibleNumber));
+			int z(get<2>(possibleNumber));
 			cout << "당신이 생각한 숫자는 " << x
 				<< ", " << y << ", " << z << " 입니까 ?" << endl;
 			int strike = 0, ball = 0;
@@ -62,10 +60,33 @@ public:
 		}
 		printf("-------------------------------\n");
 	}
+	
+protected:
+	virtual INPUT FindNumber_impl(vector<pair<INPUT, RESULT> >& v) = 0;
 };
+
+class BaseBallGameBasic : public BaseBallGame
+{
+protected:
+	INPUT FindNumber_impl(vector<pair<INPUT, RESULT> >& v) override
+	{
+		// 이전의 결과가 담긴 vector v를 참고 해서
+		// 사용자가 생각한 숫자를 예측해 냅니다.
+		// 현재 구현은 무조건 랜덤 입니다.
+		int x = 0, y = 0, z = 0;
+		do {
+			x = rand() % 9 + 1;
+			y = rand() % 9 + 1;
+			z = rand() % 9 + 1;
+		} while (x == y || y == z || x == z);
+		return  INPUT(x, y, z);
+	}
+};
+
 int main(void)
 {
-	BaseBallGame bbg;
+	//BaseBallGame bbg;
+	BaseBallGameBasic bbg;
 	bbg.run();
 }
 
